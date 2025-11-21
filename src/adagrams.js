@@ -1,16 +1,20 @@
-const handSize = 10;
-const bonusMinLength = 7;
-const lengthBonusPoints = 8;
-const pairWord = 0;
-const pairScore = 1;
 
-const letterPool = {
+const HAND_SIZE = 10;
+
+const BONUS_MIN_LENGTH = 7;
+
+const LENGTH_BONUS_POINTS = 8;
+
+const PAIR_WORD = 0;
+const PAIR_SCORE = 1;
+
+const LETTER_POOL = {
   A: 9, B: 2, C: 2, D: 4, E: 12, F: 2, G: 3, H: 2, I: 9, J: 1,
   K: 1, L: 4, M: 2, N: 6, O: 8, P: 2, Q: 1, R: 6, S: 4, T: 6,
   U: 4, V: 2, W: 2, X: 1, Y: 2, Z: 1
 };
 
-const scoreChart = {
+const SCORE_CHART = {
   A: 1, E: 1, I: 1, O: 1, U: 1, L: 1, N: 1, R: 1, S: 1, T: 1,
   D: 2, G: 2,
   B: 3, C: 3, M: 3, P: 3,
@@ -25,14 +29,14 @@ export const drawLetters = () => {
   let allLetterOccurrences = [];
   let handOfLetters = [];
 
-  for (const letter in letterPool) {
-    const frequency = letterPool[letter];
+  for (const letter in LETTER_POOL) {
+    const frequency = LETTER_POOL[letter];
     for (let i = 0; i < frequency; i++) {
       allLetterOccurrences.push(letter);
     }
   }
 
-  while (handOfLetters.length < handSize) {
+  while (handOfLetters.length < HAND_SIZE) {
     const index = Math.floor(Math.random() * allLetterOccurrences.length);
     const lastIndex = allLetterOccurrences.length - 1;
 
@@ -75,7 +79,20 @@ export const usesAvailableLetters = (word, letterBank) => {
 
 export const scoreWord = (word) => {
   // Implement this method for wave 3
+  if(!word) return 0;
+  const upperWord = word.toUpperCase();
+  let score = 0;
+  for (const letter of upperWord) {
+    if (letter in SCORE_CHART) {
+      score += SCORE_CHART[letter];
+    }
+  }
+  if (upperWord.length >= BONUS_MIN_LENGTH) {
+    score += LENGTH_BONUS_POINTS;
+  }
+  return score;
 };
+
 
 export const highestScoreFrom = (words) => {
   // Implement this method for wave 4
