@@ -93,7 +93,43 @@ export const scoreWord = (word) => {
   return score;
 };
 
-
+// implement wave 4
 export const highestScoreFrom = (words) => {
-  // Implement this method for wave 4
-};
+// Edge case: empty array
+  if (!words || words.length === 0) {
+    return null;
+  }
+
+  // Build list of {word, score}
+  const wordScoreList = words.map((word) => {
+    return { word: word.toUpperCase(), score: scoreWord(word) };
+  });
+
+  // Find max score
+  let maxScore = 0;
+  for (const pair of wordScoreList) {
+    if (pair.score > maxScore) {
+      maxScore = pair.score;
+    }
+  }
+
+  // Filter to pairs with max score
+  const tiedWords = wordScoreList.filter(pair => pair.score === maxScore);
+
+  // Tie-breaking: prefer any 10-letter word
+  for (const pair of tiedWords) {
+    if (pair.word.length === 10) {
+      return pair;   // { word: "XXXXXXXXXX", score: ___ }
+    }
+  }
+
+  // Otherwise choose the shortest word
+  let shortest = tiedWords[0];
+  for (const pair of tiedWords) {
+    if (pair.word.length < shortest.word.length) {
+      shortest = pair;
+    }
+  }
+
+  return shortest;
+  };
